@@ -1,0 +1,93 @@
+{
+  "project_metadata": {
+    "module_id": "Semantic-Graph-Core",
+    "version": "1.1.0",
+    "description": "Спецификация семантического графа для моделирования учебного процесса.",
+    "tech_stack": ["Node.js", "Graphviz", "JSON-Schema"]
+  },
+
+  "system_state": {
+    "initial_initialization": {
+      "memory_status": "loaded",
+      "initial_node": "Студент",
+      "context": "Успешное построение семантического графа в памяти системы[cite: 7]."
+    }
+  },
+
+  "domain_model": {
+    "nodes": [
+      { "id": "student_01", "label": "Студент", "type": "root" },
+      { "id": "deanery_01", "label": "Деканат", "type": "administrative" },
+      { "id": "expulsion_order", "label": "Приказ об отчислении", "type": "critical" },
+      { "id": "study_group", "label": "Учебная группа", "type": "entity" },
+      { "id": "dormitory", "label": "Общежитие", "type": "entity" },
+      { "id": "grade_book", "label": "Зачетка", "type": "entity" },
+      { "id": "library", "label": "Библиотека", "type": "entity" },
+      { "id": "debt", "label": "Долг", "type": "hazard" }
+    ],
+    "relationship_types": [
+      { "relation": "Обучается в", "source": "Студент", "target": "Деканат" },
+      { "relation": "Состоит в", "source": "Студент", "target": "Учебная группа" },
+      { "relation": "Проживает в", "source": "Студент", "target": "Общежитие" },
+      { "relation": "Владеет", "source": "Студент", "target": "Зачетка" },
+      { "relation": "Посещает", "source": "Студент", "target": "Библиотека" },
+      { "relation": "Результат", "source": "Деканат", "target": "Приказ об отчислении" }
+    ]
+  },
+
+  "functional_interfaces": {
+    "pathfinding_service": {
+      "algorithm": "Shortest Path (Dijkstra/BFS)",
+      "scenarios": {
+        "critical_path": {
+          "goal": "Приказ об отчислении",
+          "expected_route": ["Студент", "Деканат", "Приказ об отчислении"],
+          "expected_length": 2
+        }
+      },
+      "validation": "Система должна вернуть маршрут 'Студент -> Деканат -> Приказ об отчислении' с длиной пути 2."
+    },
+
+    "scalability_engine": {
+      "method": "Graph Traversal",
+      "performance_benchmarks": [
+        { "depth": 1, "expected_nodes": 5 },
+        { "depth": 2, "expected_nodes": 25 },
+        { "depth": 3, "expected_nodes": 100 }
+      ],
+      "description": "Проверка количества найденных узлов на разной глубине обхода."
+    },
+
+    "integrity_monitor": {
+      "feature": "Cycle Detection",
+      "test_case": "Студент -> Долг -> Студент",
+      "error_protocol": {
+        "detection_status": "error",
+        "message_template": "Обнаружен цикл: Студент -> Долг -> Студент"
+      },
+      "validation": "При обнаружении замкнутого контура выводится системное сообщение об ошибке."
+    },
+
+    "visualization_exporter": {
+      "target_format": "DOT (Graphviz)",
+      "styling_rules": {
+        "node_shape": "box",
+        "font_family": "Arial",
+        "critical_edge_color": "red"
+      },
+      "output_template": "digraph G { node [shape=box, fontname=\"Arial\"]; \"Студент\" -> \"Деканат\" [label=\"запрос\"]; \"Деканат\" -> \"Приказ об отчислении\" [label=\"результат\", color=red]; }",
+      "validation": "Генерация графического кода для визуализации маршрута в Graphviz."
+    }
+  },
+
+  "data_dictionary": {
+    "adjacency_table_student": [
+      { "Vertex": "Деканат", "Relation": "Обучается в" },
+      { "Vertex": "Учебная группа", "Relation": "Состоит в" },
+      { "Vertex": "Общежитие", "Relation": "Проживает в" },
+      { "Vertex": "Зачетка", "Relation": "Владеет" },
+      { "Vertex": "Библиотека", "Relation": "Посещает" }
+    ],
+    "reference": "Полный список смежных вершин для узла 'Студент' с типами их отношений."
+  }
+}
